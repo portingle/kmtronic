@@ -25,6 +25,8 @@ class WindowsComPort(comPortNumber: Int) extends ComPort {
     } catch {
       case e: Exception => throw new RuntimeException("Error executing command: " + command, e)
     }
+    
+    Thread.sleep(1000)
   }
 
   override def portName = "com" + comPortNumber + ":"

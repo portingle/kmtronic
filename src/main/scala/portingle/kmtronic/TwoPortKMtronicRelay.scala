@@ -17,13 +17,25 @@ class TwoPortKMtronicRelay(comPort: ComPort) {
 
   def isOpen = rwFile.isDefined
 
-  def open() {
-    rwFile = Some(new RandomAccessFile(comPort.portName, "rws"))
+  def open()  {
+    setComParams
+    fileOpen
+  }
+
+  private def fileOpen : RandomAccessFile = {
+    val file: RandomAccessFile = new RandomAccessFile(comPort.portName, "rw")
+    rwFile = Some(file)
+    file
+  }
+
+  private def setComParams {
     comPort.setMode(9600, false, 8, 1)
   }
 
   def close() {
-    if (rwFile.isDefined) rwFile.get.close()
+    if (rwFile.isDefined) {
+      rwFile.get.close()
+    }
     rwFile = None
   }
 
@@ -46,6 +58,8 @@ class TwoPortKMtronicRelay(comPort: ComPort) {
     val buffer = ByteBuffer.allocate(expectedBytes)
 
     def read(remainingTimeoutMs: Int) {
+      if (debug) println("Reading ... " )
+
       if (remainingTimeoutMs <= 0)
         throw new RuntimeException("timeout waiting for relay status : expected " + expectedBytes + " bytes but got " + buffer.position())
 
@@ -67,9 +81,9 @@ class TwoPortKMtronicRelay(comPort: ComPort) {
 
   private[kmtronic] def sendBytes(data: Byte*) {
     if (debug) println("Sending " + toString(data.toArray))
-    val os = rwFile.getOrElse(throw new RuntimeException("must call open before writing to relay"))
+    close
+    val os = fileOpen
     os.write(data.toArray, 0, data.length)
-    os.getFD.sync()
   }
 }
 

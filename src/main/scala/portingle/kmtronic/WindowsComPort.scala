@@ -13,21 +13,21 @@ class WindowsComPort(comPortNumber: Int) extends ComPort {
       "data=" + dataBits,
       "stop=" + stopBits
     )
-    println(command.mkString(" "))
+    println("exec : "  + command.mkString(" "))
 
     try {
       val p = Runtime.getRuntime().exec(command)
 
       val exitCode = p.waitFor()
       if (exitCode != 0) {
-        throw new RuntimeException("Error executing command non-zero return value " + exitCode + ": " + command)
+        throw new RuntimeException("Error executing command non-zero return value " + exitCode + ": " + command.mkString(" "))
       }
     } catch {
-      case e: Exception => throw new RuntimeException("Error executing command: " + command, e)
+      case e: Exception => throw new RuntimeException("Error executing command: " + command.mkString(" "), e)
     }
     
     Thread.sleep(1000)
   }
 
-  override def portName = "com" + comPortNumber + ":"
+  override def portName = "com" + comPortNumber
 }

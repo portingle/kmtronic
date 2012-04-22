@@ -24,16 +24,28 @@ object RelayDemo extends App {
 
   while (true) {
     val relayNum = 1 + (count % 2)
-    val relay = relays(relayNum)
+    try {
+      val relay = relays(relayNum)
 
-    if ((count/2) % 2 == 0) {
-      println("Relay " + relayNum + " on")
-      relay.powerOn()
-    //  assert(true == relay.isPowered, "expected relay to be on")
-    } else {
-      println("Relay " + relayNum + " off")
-      relay.powerOff()
-  //    assert(false == relay.isPowered, "expected relay to be off")
+      if ((count / 2) % 2 == 0) {
+        println("Relay " + relayNum + " on")
+        relay.powerOn()
+        Thread.sleep(100)
+       assert(true == relay.isPowered, "expected relay to be on")
+      } else {
+        println("Relay " + relayNum + " off")
+        relay.powerOff()
+        Thread.sleep(100)
+        assert(false == relay.isPowered, "expected relay to be off")
+      }
+    }
+    catch {
+      case e => {
+        try {
+        relays.close()
+        relays.open()
+        } catch { case _ => }
+      }
     }
     Thread.sleep(500)
 

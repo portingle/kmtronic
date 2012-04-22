@@ -10,11 +10,11 @@ private class TwoPortKMtronicRelayInstance(parent: TwoPortKMtronicRelay,
   }
 
   def powerOn() {
-    parent.sendBytes(PrefixByte, relayInstance.asInstanceOf[Byte], CommandSwitchOn, 0)
+    parent.sendBytes(PrefixByte, relayInstance.asInstanceOf[Byte], CommandSwitchOn)
   }
 
   def powerOff() {
-    parent.sendBytes(PrefixByte, relayInstance.asInstanceOf[Byte], CommandSwitchOff, 0)
+    parent.sendBytes(PrefixByte, relayInstance.asInstanceOf[Byte], CommandSwitchOff)
   }
 
   def isPowered: Boolean = {

@@ -11,6 +11,10 @@
 	<name>Portingle :: KMTronic</name>
 	<description>JVM adapter for KMTronic USB switch relay</description>
 
+    <properties>
+        <jna.version>3.3.0</jna.version>
+    </properties>
+
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -70,6 +74,17 @@
 			<version>4.10</version>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>${jna.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>${jna.version}</version>
+            <classifier>platform</classifier>
+        </dependency>
 
 	</dependencies>
 

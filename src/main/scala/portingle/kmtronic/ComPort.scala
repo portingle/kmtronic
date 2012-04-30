@@ -1,8 +1,8 @@
 package portingle.kmtronic
 
 trait ComPort {
-
-  def setMode(baud: Int, parity: Boolean, dataBits: Int, stopBits: Int)
+  /** parity = [N]one / [O]dd / [E]ven */
+  def setMode(baud: Int, parity: Char, dataBits: Int, stopBits: Int)
 
   def portName: String
 }

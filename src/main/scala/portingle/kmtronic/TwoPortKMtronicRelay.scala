@@ -9,7 +9,6 @@ class TwoPortKMtronicRelay(comPort: ComPort) {
   private val relays = ((1 to 2).map(new TwoPortKMtronicRelayInstance(this, _)))
   private var debug = false
 
-
   def apply(relayInstance: Int): RelayInstance = {
     checkInstanceBounds(relayInstance)
     relays(relayInstance - 1)
@@ -32,7 +31,7 @@ class TwoPortKMtronicRelay(comPort: ComPort) {
   }
 
   private def setComParams() {
-    comPort.setMode(9600, false, 8, 1)
+    comPort.setMode(9600, 'N', 8, 1)
   }
 
   def close() {

@@ -13,7 +13,7 @@ object RelayDemo extends App {
   val comPortNumber = 5
   val numberOfRelays = 2
 
-  val relays = new TwoPortKMtronicRelay(new WindowsComPort(comPortNumber))
+  val relays = new TwoPortKMtronicRelay(new WindowsComPort("com5:"))
   relays.debug(true)
   relays.open()
 

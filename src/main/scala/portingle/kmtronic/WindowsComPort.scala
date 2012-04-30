@@ -107,14 +107,7 @@ class WindowsComPort(val portName: String) extends ComPort {
 
 }
 
-object WindowsComPortTest extends App {
 
-  val port = new WindowsComPort("com5:")
-
-  port.setMode(9600, 'N', 8, 1)
-  port.printComState()
-
-}
 
 
 

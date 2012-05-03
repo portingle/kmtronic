@@ -14,12 +14,19 @@ object RelayDemo extends App {
   val numberOfRelays = 2
 
   val relays = new TwoPortKMtronicRelay(new WindowsComPort("com5:"))
-  relays.debug(true)
-  relays.open()
 
-  relays(1).powerOff()
-  relays(2).powerOff()
+  try {
+    relays.debug(true)
+    relays.open()
 
+    relays(1).powerOff()
+    relays(2).powerOff()
+  } catch {
+    case e => {
+      println("->" + e)
+      throw e
+    }
+  }
   var count = 0
 
   while (true) {
@@ -27,24 +34,28 @@ object RelayDemo extends App {
     try {
       val relay = relays(relayNum)
 
+      println("current state : powered = " + relay.isPowered)
+
       if ((count / 2) % 2 == 0) {
-        println("Relay " + relayNum + " on")
+        println("turn relay " + relayNum + " on")
         relay.powerOn()
-        Thread.sleep(100)
-       assert(true == relay.isPowered, "expected relay to be on")
+        assert(true == relay.isPowered, "expected relay to be on")
       } else {
-        println("Relay " + relayNum + " off")
+        println("turn relay " + relayNum + " off")
         relay.powerOff()
-        Thread.sleep(100)
         assert(false == relay.isPowered, "expected relay to be off")
       }
     }
     catch {
       case e => {
+        println("error ->" + e)
         try {
-        relays.close()
-        relays.open()
-        } catch { case _ => }
+          relays.close()
+          relays.open()
+        } catch {
+          case _ =>
+            println("error during close/reopen -> " + e)
+        }
       }
     }
     Thread.sleep(500)

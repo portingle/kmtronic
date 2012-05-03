@@ -8,6 +8,7 @@ import java.nio.{CharBuffer, Buffer}
 import scala.Array
 import com.sun.jna.platform.win32.{WinBase, WinDef, WinNT}
 import com.sun.jna.platform.win32.WinNT._
+import com.sun.jna.platform.win32.WinDef.{DWORD, WORD}
 
 class WindowsComPort(val portName: String) extends ComPort {
 
@@ -31,6 +32,7 @@ class WindowsComPort(val portName: String) extends ComPort {
     var command = "baud=%d parity=%c data=%d stop=%d".format(baud, parity, dataBits, stopBits)
 
     val dcb = new DCB
+    dcb.DCBlength = new DWORD(dcb.size())
     checkError("BuildCommDCB", kernel32.BuildCommDCB(command, dcb))
     val comPortHandle = openPort()
     try {
@@ -87,6 +89,7 @@ class WindowsComPort(val portName: String) extends ComPort {
     } else {
       r
     }
+
   }
 
   private trait MyKernel32 extends com.sun.jna.win32.StdCallLibrary {
@@ -106,9 +109,3 @@ class WindowsComPort(val portName: String) extends ComPort {
   }
 
 }
-
-
-
-
-
-
